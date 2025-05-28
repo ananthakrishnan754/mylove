@@ -1,0 +1,180 @@
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #FFF8E1;
+    color: #333;
+    overflow-x: hidden;
+}
+h1, h2, h3, .playfair {
+    font-family: 'Playfair Display', serif;
+}
+.hero-bg {
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 235, 235, 0.8)), url('../assets/background_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(30px);
+}
+.card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(220, 50, 50, 0.15);
+}
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.heart-icon {
+    color: #E53E3E;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+.button-propose {
+    background-color: #D32F2F;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    min-width: 250px;
+}
+.button-propose:hover {
+    background-color: #B71C1C;
+    transform: scale(1.05);
+}
+.section-title {
+    font-size: 1.75rem;
+    color: #B71C1C;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+@media (min-width: 768px) {
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+}
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #FFEB3B;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+.video-container {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    aspect-ratio: 16/9;
+    margin: 0 auto;
+}
+.video-container video {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+.modal-content {
+    background-color: #FFEBEE;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #E57373;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeInModal 0.5s ease-out;
+}
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 20% auto;
+        width: 95%;
+        padding: 15px;
+    }
+}
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.close-button {
+    color: #B71C1C;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.close-button:hover,
+.close-button:focus {
+    color: #7f0000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+// Set current year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    observer.observe(el);
+});
+
+// Modal functionality
+const modal = document.getElementById('proposalModal');
+const proposeButton = document.getElementById('proposeButton');
+const closeModalButton = document.getElementById('closeModalButton');
+
+proposeButton.onclick = function() {
+    modal.style.display = "block";
+}
+
+closeModalButton.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Handle mobile viewport height
+function setViewportHeight() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+setViewportHeight();
